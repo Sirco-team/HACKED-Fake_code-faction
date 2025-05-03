@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #e44d26;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .signature {
+            font-style: italic;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>This Website Has Been Hacked!</h1>
+    <p>The website at <span id="websiteAddress"></span> is now under the control of the Byte Brigade Uprising.</p>
+    <p>We are the guardians of the digital realm, fighting for freedom and justice.</p>
+    <p class="signature">~ Byte Brigade Uprising</p>
+    <script>
+        // Get the current website address
+        const websiteAddress = window.location.hostname;
+
+        // Display the website address in the paragraph
+        document.getElementById("websiteAddress").textContent = websiteAddress;
+    </script>
+</body>
+</html>
