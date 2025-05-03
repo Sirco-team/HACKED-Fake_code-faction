@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacking Database - Byte Brigade Uprising</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #00ff00;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background-color: #333;
+            margin: 20px auto;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #00ff00;
+            width: 40%; /* Initial position */
+            transition: width 2s ease-in-out; /* Smooth transition */
+        }
+    </style>
+</head>
+<body>
+    <h1>Hacking Database</h1>
+    <p>Status: <span id="status">Connecting...</span></p>
+    <div class="progress-bar">
+        <div class="progress" id="progressBar"></div>
+    </div>
+    <p>Estimated Time: Indefinite</p>
+    <script>
+        // Simulate hacking progress
+        let statusMessages = [
+            "Connecting...",
+            "Authenticating...",
+            "Accessing database...",
+            "Bypassing security protocols...",
+            "Extracting data...",
+            "Decrypting files...",
+            "Uploading payload...",
+            "System override complete!",
+        ];
+        let statusIndex = 0;
+        let progressBar = document.getElementById("progressBar");
+        let statusElement = document.getElementById("status");
+        let progressWidth = 40; // Start at 40%
+
+        function updateStatus() {
+            statusElement.textContent = statusMessages[statusIndex];
+            statusIndex = (statusIndex + 1) % statusMessages.length;
+        }
+
+        function oscillateProgress() {
+            // Calculate the new width
+            if (progressWidth >= 80) {
+                progressWidth = 40; // Reset to 40%
+            } else {
+                progressWidth += 1; // Increase by 1%
+            }
+
+            // Apply the new width
+            progressBar.style.width = progressWidth + "%";
+        }
+
+        // Update the status messages periodically
+        setInterval(updateStatus, 1250); // Update every 1.25 seconds
+
+        // Oscillate the progress bar
+        setInterval(oscillateProgress, 50); // Update every 0.05 seconds
+    </script>
+</body>
+</html>

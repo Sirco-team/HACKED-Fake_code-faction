@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacked!</title>
+    <title>ACCESS DENIED</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #00ff00;
             text-align: center;
             padding: 50px;
         }
         h1 {
-            color: #e44d26;
             font-size: 3em;
             margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff00;
         }
         p {
             font-size: 1.2em;
@@ -22,21 +23,93 @@
         }
         .signature {
             font-style: italic;
-            color: #888;
+            color: #ffff00;
         }
+        #websiteAddress {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        #redirectMessage {
+            margin-top: 30px;
+        }
+
+        /* Adjusted Voting Banner Styling */
+        #votingLink {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Slight transparency */
+            padding: 10px;
+            text-align: center;
+            font-size: 1em;
+            box-shadow: 0 0 5px #00ff00;
+            z-index: 9999;
+        }
+        #votingLink p {
+            margin: 5px 0;
+        }
+        #votingLink a {
+            color: #00ff00;
+            font-size: 1em;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Ensuring main content isn't blocked */
+        #contentWrapper {
+            margin-top: 50px; /* Adjusted so "ACCESS DENIED" isn't covered */
+        }
+
     </style>
 </head>
 <body>
-    <h1>This Website Has Been Hacked!</h1>
-    <p>The website at <span id="websiteAddress"></span> is now under the control of the Byte Brigade Uprising.</p>
-    <p>We are the guardians of the digital realm, fighting for freedom and justice.</p>
-    <p class="signature">~ Byte Brigade Uprising</p>
+    <!-- Voting Banner -->
+    <div id="votingLink">
+        <p>Help us choose the next educational resource that this website will redirect to!</p>
+        <p><a href="http://vote.byte-brigade.giize.com">Vote Now</a></p>
+    </div>
+
+    <!-- Wrapped main content for proper spacing -->
+    <div id="contentWrapper">
+        <h1>ACCESS DENIED</h1>
+        <p>Initiating system override...</p>
+        <p>Target website at <span id="websiteAddress"></span> has been compromised by Byte Brigade Uprising.</p>
+        <p>All systems are now under our control. Prepare for digital domination!</p>
+        <p class="signature">~ Byte Brigade Uprising</p>
+
+        <!-- Conditional Redirection Message -->
+        <div id="redirectMessage" style="display: none;">
+            <p>Redirecting to the educational resource chosen by the community...</p>
+            <p>Please wait...</p>
+        </div>
+    </div>
+
     <script>
         // Get the current website address
         const websiteAddress = window.location.hostname;
-
-        // Display the website address in the paragraph
         document.getElementById("websiteAddress").textContent = websiteAddress;
+
+        // Configuration options
+        const redirectEnabled = false; // Set to true to enable redirect, false to disable
+        const redirectDelaySeconds = 5; // Delay in seconds (0 for instant redirect)
+        const educationalWebsiteURL = "https://ixl.com"; // Replace with your URL
+        const votingWebsiteURL = "http://vote.byte-brigade.giize.com"; // Replace with your voting URL
+
+        // Get references to the elements
+        const redirectMessage = document.getElementById("redirectMessage");
+        const votingLink = document.getElementById("votingLink");
+
+        // Perform the redirect if enabled
+        if (redirectEnabled) {
+            redirectMessage.style.display = "block"; // Show the redirect message
+            setTimeout(function() {
+                window.location.href = educationalWebsiteURL;
+            }, redirectDelaySeconds * 1000); // Convert seconds to milliseconds
+        } else {
+            votingLink.style.display = "block"; // Show the voting banner at the top
+        }
     </script>
 </body>
 </html>
