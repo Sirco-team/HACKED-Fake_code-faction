@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title> <!-- Placeholder title -->
+    <title>Redirecting...</title> 
     <script>
-        // Determine which page to redirect to
-        const urlParams = new URLSearchParams(window.location.search);
-        const targetPage = urlParams.get("page") || "/hacked"; // Default to index-1.html
+        async function determineRedirect() {
+            try {
+                // Fetch completion time from external JSON file
+                const response = await fetch("/time.json");
+                if (!response.ok) throw new Error("Failed to load override time.");
+                const data = await response.json();
+                
+                const overrideTime = new Date(data.completionTime);
+                const currentTime = new Date();
 
-        // /hacked for the hacked page
-        // /datastream for it geting hacked
+                // Redirect based on time comparison
+                if (currentTime < overrideTime) {
+                    window.location.href = "/datastream"; // Before override
+                } else {
+                    window.location.href = "/hacked"; // After override
+                }
 
-        // Redirect instantly
-        window.location.href = targetPage;
+            } catch (error) {
+                console.error("Error fetching override time:", error);
+                document.body.innerHTML = "<p style='color: red;'>Error determining redirect.</p>";
+            }
+        }
+
+        determineRedirect();
     </script>
 </head>
 <body>

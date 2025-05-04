@@ -3,85 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacking Database - Byte Brigade Uprising</title>
+    <title>System Override v2.7.2</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
             background-color: #000;
             color: #00ff00;
             text-align: center;
-            padding: 50px;
+            padding: 30px;
+            user-select: none;
         }
-        h1 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-        .progress-bar {
+        h1 { font-size: 2em; text-shadow: 0 0 10px #00ff00; }
+        .status-container {
             width: 80%;
-            height: 20px;
-            background-color: #333;
-            margin: 20px auto;
+            background-color: #111;
+            margin: auto;
+            padding: 15px;
             border-radius: 5px;
-            overflow: hidden;
+            border: 1px solid #00ff00;
+            box-shadow: 0 0 10px #00ff00;
         }
-        .progress {
-            height: 100%;
-            background-color: #00ff00;
-            width: 40%; /* Initial position */
-            transition: width 2s ease-in-out; /* Smooth transition */
+        .completion-time {
+            font-size: 1.2em;
+            color: #ffff00;
         }
+        #console {
+            text-align: left;
+            font-size: 1em;
+            width: 80%;
+            margin: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border: 1px solid #00ff00;
+            height: 200px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+        }
+        #console::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
-    <h1>Hacking Database</h1>
-    <p>Status: <span id="status">Connecting...</span></p>
-    <div class="progress-bar">
-        <div class="progress" id="progressBar"></div>
-    </div>
-    <p>Estimated Time: Indefinite</p>
-    <script>
-        // Simulate hacking progress
-        let statusMessages = [
-            "Connecting...",
-            "Authenticating...",
-            "Accessing database...",
-            "Bypassing security protocols...",
-            "Extracting data...",
-            "Decrypting files...",
-            "Uploading payload...",
-            "System override complete!",
-        ];
-        let statusIndex = 0;
-        let progressBar = document.getElementById("progressBar");
-        let statusElement = document.getElementById("status");
-        let progressWidth = 40; // Start at 40%
+    <h1>System Override Protocol</h1>
 
-        function updateStatus() {
-            statusElement.textContent = statusMessages[statusIndex];
-            statusIndex = (statusIndex + 1) % statusMessages.length;
+    <div class="status-container">
+        <p>Status: <span id="status">Initializing...</span></p>
+        <p>Override Completion Time: <span class="completion-time" id="completionTimeDisplay"></span></p>
+    </div>
+
+    <div id="console">
+        <p>> Boot sequence initialized...</p>
+    </div>
+
+    <script>
+        /* Debug Mode Toggle */
+        const DEBUG_MODE = false;
+
+        /* System Core */
+        const procStatus = document.getElementById("status");
+        const consoleOut = document.getElementById("console");
+        const completionDisplay = document.getElementById("completionTimeDisplay");
+        let completionTime = null;
+        let overrideCompleted = false;
+        let currentStatusIndex = 0;
+        let progressCount = 0;
+
+        /* Status Messages */
+        const statusMessages = [
+            "Initializing system override...",
+            "Bypassing firewall...",
+            "Injecting system exploit...",
+            "Accessing root protocols...",
+            "Uploading control sequence...",
+            "Locking system parameters..."
+        ];
+
+        /* Extended Progress Bar Length */
+        const progressBarLength = 30;
+
+        /* Load completion time dynamically */
+        async function fetchCompletionTime() {
+            try {
+                const response = await fetch("/time.json");
+                if (!response.ok) throw new Error("Failed to load completion time.");
+                const data = await response.json();
+                completionTime = new Date(data.completionTime);
+                completionDisplay.textContent = completionTime.toLocaleString();
+                setInterval(executeCycle, 1000);
+            } catch (error) {
+                console.error(error);
+                completionDisplay.textContent = "Error loading override time.";
+            }
         }
 
-        function oscillateProgress() {
-            // Calculate the new width
-            if (progressWidth >= 80) {
-                progressWidth = 40; // Reset to 40%
-            } else {
-                progressWidth += 1; // Increase by 1%
+        /* Progress bar visualization */
+        function updateProgressBar() {
+            let progressString = "| ";
+            let completedStars = Math.floor((progressCount / 100) * progressBarLength);
+            let remainingDashes = progressBarLength - completedStars;
+            progressString += "*".repeat(completedStars) + "-".repeat(remainingDashes);
+            progressString += ` | ${progressCount}%`;
+
+            return progressString;
+        }
+
+        function executeCycle() {
+            let now = new Date();
+            if (!completionTime) return;
+
+            let remainingTime = (completionTime - now) / 1000;
+
+            /* Redirect if time is reached */
+            if (now >= completionTime && !overrideCompleted) {
+                procStatus.textContent = "System Override Complete!";
+                logConsole("> System Override Confirmed. Redirecting...");
+                setTimeout(() => {
+                    window.location.href = "/hacked";
+                }, 3000);
+                overrideCompleted = true;
+                return;
             }
 
-            // Apply the new width
-            progressBar.style.width = progressWidth + "%";
+            /* Prevent access to /datastream once override is complete */
+            if (overrideCompleted && window.location.pathname === "/datastream") {
+                window.location.href = "/hacked";
+            }
+
+            /* Finalizing override */
+            if (remainingTime <= 15) {
+                procStatus.textContent = "Finalizing override...";
+                logConsole(`> Finalizing override... ${updateProgressBar()}`);
+            } else {
+                if (progressCount < 100) {
+                    progressCount += Math.floor(Math.random() * 5) + 5;
+                    if (progressCount > 100) progressCount = 100;
+                    logConsole(`> ${statusMessages[currentStatusIndex]} ${updateProgressBar()}`);
+                } else {
+                    setTimeout(() => {
+                        progressCount = 0;
+                        currentStatusIndex = (currentStatusIndex + 1) % statusMessages.length;
+                        procStatus.textContent = statusMessages[currentStatusIndex];
+                    }, 2000);
+                }
+            }
+
+            /* Debugging Logs */
+            if (DEBUG_MODE) {
+                logConsole(`> Current Time: ${now.toLocaleString()} | Target Time: ${completionTime.toLocaleString()}`);
+            }
         }
 
-        // Update the status messages periodically
-        setInterval(updateStatus, 1250); // Update every 1.25 seconds
+        function logConsole(text) {
+            let output = document.createElement("p");
+            output.textContent = text;
+            consoleOut.appendChild(output);
+            consoleOut.scrollTop = consoleOut.scrollHeight;
+        }
 
-        // Oscillate the progress bar
-        setInterval(oscillateProgress, 50); // Update every 0.05 seconds
+        /* Start by fetching completion time */
+        fetchCompletionTime();
     </script>
 </body>
 </html>
