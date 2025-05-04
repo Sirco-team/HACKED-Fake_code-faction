@@ -76,6 +76,28 @@
             animation: glitch 0.2s infinite alternate;
         }
     </style>
+
+<script>
+    async function checkAccess() {
+        try {
+            const response = await fetch("/time.json");
+            if (!response.ok) throw new Error("Failed to load override time.");
+            const data = await response.json();
+            
+            const overrideTime = new Date(data.completionTime);
+            const currentTime = new Date();
+
+            if (currentTime < overrideTime) {
+                window.location.href = "/datastream";
+            }
+        } catch (error) {
+            console.error("Error fetching override time:", error);
+        }
+    }
+
+    checkAccess();
+</script>
+
 </head>
 <body>
 
